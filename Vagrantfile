@@ -1,25 +1,33 @@
-Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-  config.vm.network :private_network, ip: "10.0.0.200"
-    config.ssh.forward_agent = true
+Vagrant.configure(2) do |config|
+  config.vm.box = "trusty64"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  
+  # config.vm.box_check_update = false
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "private_network", ip: "192.168.33.10"
+  # config.vm.network "public_network"
+  # config.vm.synced_folder "../data", "/vagrant_data"
 
-  config.vm.provider :virtualbox do |v|
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--memory", 1024]
-    v.customize ["modifyvm", :id, "--name", "flat"]
+  config.vm.provider :virtualbox do |vb|
+    vb.gui = true
   end
 
-#  nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/
-  config.vm.synced_folder "./../", "/var/www/flat", type: "smb", id: "vagrant-root"
-#  , :nfs => nfs_setting
-  config.vm.provision :shell do |shell|
-    shell.path = "bootstrap.sh"
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "cookbooks"
+    chef.roles_path = "roles"
+    chef.add_role "web"
+    # chef.data_bags_path = "../my-recipes/data_bags"
+
+#    chef.json = {
+#        "mysql" => {
+#            "server_root_password" => "%your_pass0%",
+#        "server_repl_password" => "%your_pass1%",
+#        "server_debian_password" => "%your_pass2%"
+#       }
+#   }
   end
 
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "manifests"
-    puppet.options = ['--verbose']
-  end
 end
