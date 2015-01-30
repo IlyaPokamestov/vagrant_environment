@@ -5,3 +5,6 @@ license             'all_rights'
 description         'Installs/Configures symfony_env'
 long_description    'Installs/Configures symfony_env'
 version             '0.1.0'
+
+depends "app"
+depends "nginx"

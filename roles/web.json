@@ -7,7 +7,6 @@
     "chef_type": "role",
     "run_list": [
         "recipe[apt]",
-        "recipe[nginx]",
-        "recipe[nginx:server]"
+        "recipe[nginx]"
     ]
 }
