@@ -1,9 +1,9 @@
 server {
-	listen <%= node['nginx']['listen'] %>;
-	server_name <%= node['nginx']['host'] %>;
-	root /var/www/<%= node['nginx']['host'] %>;
-	error_log /var/log/nginx/<%= node['nginx']['host'] %>.error.log;
-	access_log /var/log/nginx/<%= node['nginx']['host'] %>.access.log;
+	listen 80;
+	server_name <%= node['app']['name'] %>;
+	root <%= node['app']['web_path'] %><%= node['app']['name'] %>;
+	error_log /var/log/nginx/<%= node['app']['name'] %>.error.log;
+	access_log /var/log/nginx/<%= node['app']['name'] %>.access.log;
 
 	#strip app_dev.php/ prefix if it is present
 	#rewrite ^/app_dev\.php/?(.*)$ /$1 permanent;
@@ -19,8 +19,7 @@ server {
 
 	# pass the PHP scripts to FastCGI server listening socket
 	location ~ ^/(app|app_dev|index.php)\.php(/|$) {
-	    fastcgi_pass <%= node['nginx']['fastcgi']['pass'] %>;
-#	    unix://var/run/php5-fpm.sock;
+	    fastcgi_pass unix://var/run/php5-fpm.sock;
         fastcgi_keep_conn on;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;

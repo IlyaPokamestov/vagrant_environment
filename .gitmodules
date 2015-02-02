@@ -1,0 +1,9 @@
+[submodule "cookbooks/composer"]
+	path = cookbooks/composer
+	url = git://github.com/Morphodo/chef-composer.git
+[submodule "cookbooks/nginx"]
+	path = cookbooks/nginx
+	url = https://github.com/phlipper/chef-nginx.git
+[submodule "cookbooks/apt"]
+	path = cookbooks/apt
+	url = https://github.com/opscode-cookbooks/apt.git
