@@ -29,3 +29,5 @@ nginx_site node["app"]["name"] do
   template_source 'nginx_site.erb'
   action [:create, :enable]
 end
+
+include_recipe "symfony_env::symfony"
